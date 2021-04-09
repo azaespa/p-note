@@ -7,6 +7,18 @@
     margin:auto;
 }
 
+.toDoForm > input {
+    width: 300px;
+}
+
 .toDoForm > h6 {
     color: grey;
+}
+
+.feelingsForm {
+    display: none;
+}
+
+.showing {
+    display: block;
 }
