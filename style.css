@@ -15,10 +15,16 @@
     color: grey;
 }
 
-.feelingsForm {
+.feelingsContainer {
     display: none;
 }
 
 .showing {
     display: block;
+}
+
+.feelingsForm {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
