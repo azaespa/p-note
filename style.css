@@ -26,5 +26,10 @@
 .feelingsForm {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+
+}
+
+.clickedFeelingBtn {
+    background-color: grey;
+    color: white;
 }
