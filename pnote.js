@@ -2,7 +2,8 @@ const toDoForm = document.querySelector(".js-toDoForm"),
     toDoInput = toDoForm.querySelector("input"),
     feelingsContainer = document.querySelector(".js-feelingsContainer"),
     feelingsTitle = feelingsContainer.querySelector(".title"),
-    feelingsForm = feelingsContainer.querySelector("form");
+    feelingsForm = feelingsContainer.querySelector("form"),
+    definitionContainer = document.querySelector(".js-definitionContainer");
 
 const idealisticList = [
     {
@@ -57,44 +58,52 @@ const procrastination = {
         definition: allProcrastinationDefinition,
         list: allProcrastinationList
         }
-}
-const CLICKED_FEELING_BTN_CN = "clickedFeelingBtn";
-const CLICKED_FEELING_BTN = false;
+};
+const SHOWING_CN = "showing";
+let CLICKED_IDEALISTIC = [];
+let isDefinitionPainted = false;
 
-function searchProcrastinationTypeDefinition(btnId){
+function paintIdealisticpDefinition(){
+    const idealisticElement = document.createElement('h6');
+    idealisticElement.textContent = idealisticDefinition;
+    definitionContainer.appendChild(idealisticElement);
+    definitionContainer.classList.add(SHOWING_CN);
+}
+
+function paintProcrastinationTypeDefinition(button){
     procrastination.idealistic.list.forEach(function(text){
-        if(btnId === text.id){
-            console.log(procrastination.idealistic.definition);
+        if(button.id === text.id){
+            CLICKED_IDEALISTIC.push({
+                btnId: button.id,
+                added: button.getAttribute("added")
+            });
+            //SEPARATE paintProcrastinationTypeDefinition AND ERASE
         }
     });
     procrastination.avoidance.list.forEach(function(text){
-        if(btnId === text.id){
+        if(button.id === text.id){
             console.log(procrastination.avoidance.definition);
         }
     });
     procrastination.operational.list.forEach(function(text){
-        if(btnId === text.id){
+        if(button.id === text.id){
             console.log(procrastination.operational.definition);
         }
     });
 }
 
 function handleClick(event){
-    const feelingBtn = event.target;
+    let feelingBtn = event.target;
     const feelingBtnId = feelingBtn.id;
-    const getFeelingBtnClickAttribute = feelingBtn.getAttribute("clicked");
-    const isFeelingBtnClicked = (getFeelingBtnClickAttribute === 'true');
-    //isFeelingBtnClicked value doesnt change. always stay in true
-    feelingBtn.classList.add("clickedFeelingBtn");
-    searchProcrastinationTypeDefinition(feelingBtnId);
-    if(isFeelingBtnClicked){
-        console.log("i am clicked");
-        feelingBtn.setAttribute("clicked", false);
+    const isAdded = feelingBtn.getAttribute("added");
+    if(isAdded === 'true'){
+        feelingBtn.classList.remove("clickedFeelingBtn");
+        feelingBtn.setAttribute("added", "false");
     } else {
-        console.log("i am not")
-        feelingBtnClickAttribute = true;
+        feelingBtn.classList.add("clickedFeelingBtn");
+        feelingBtn.setAttribute("added", "true");
+        paintProcrastinationTypeDefinition(feelingBtn);
     }
-    console.log(isFeelingBtnClicked);
 }
 
 function paintFeelingsBtn() {
@@ -104,14 +113,14 @@ function paintFeelingsBtn() {
         feelingBtn.id = feeling.id;
         feelingBtn.className = "feelingBtn";
         feelingBtn.value = feeling.value;
-        feelingBtn.setAttribute("clicked", false);
+        feelingBtn.setAttribute("added", "false");
         feelingsForm.appendChild(feelingBtn);
         feelingBtn.addEventListener("click", handleClick);
     });
 }
 
 function paintFeelingsContainer(text) {
-    feelingsContainer.classList.add("showing");
+    feelingsContainer.classList.add(SHOWING_CN);
     feelingsTitle.textContent = `${text} is what you want to do right now,
         but can't because you are procrastinating. Maybe one of these
         emotions are what holding you back from getting started with what 
